@@ -15,7 +15,7 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { Button, ButtonWithLoading } from "../ui/button";
 import { useState } from "react";
 import { useToast } from "../ui/use-toast";
 
@@ -92,9 +92,14 @@ export const StoreModal = () => {
                 >
                   Cancel
                 </Button>
-                <Button aria-disabled={loading} type="submit">
+                <ButtonWithLoading
+                  aria-disabled={loading}
+                  isLoading={loading}
+                  loadingText={"Loading"}
+                  type="submit"
+                >
                   Continue
-                </Button>
+                </ButtonWithLoading>
               </div>
             </form>
           </Form>
