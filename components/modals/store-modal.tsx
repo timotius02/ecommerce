@@ -18,6 +18,7 @@ import { Input } from "../ui/input";
 import { Button, ButtonWithLoading } from "../ui/button";
 import { useState } from "react";
 import { useToast } from "../ui/use-toast";
+import { redirect } from "next/navigation";
 
 const formSchema = z.object({
   name: z.string().min(1),
@@ -43,9 +44,8 @@ export const StoreModal = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
       }).then((response) => response.json());
-      toast({
-        description: "Store created",
-      });
+
+      window.location.assign(`/${response.data.id}`);
     } catch (error) {
       toast({
         variant: "destructive",
@@ -61,7 +61,7 @@ export const StoreModal = () => {
       title="Create store"
       description="Add a new store to manage products and categories"
       isOpen={storeModal.isOpen}
-      onClose={storeModal.onClose}
+      onClose={storeModal.close}
     >
       <div>
         <div className="space-y-4 py-2 pb-4">
@@ -88,7 +88,7 @@ export const StoreModal = () => {
                 <Button
                   variant="outline"
                   aria-disabled={loading}
-                  onClick={storeModal.onClose}
+                  onClick={storeModal.close}
                 >
                   Cancel
                 </Button>
