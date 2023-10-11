@@ -43,8 +43,6 @@ export default function StoreSwitcher({
     value: item.id,
   }));
 
-  console.log(formattedItems);
-
   const currentStore = formattedItems.find(
     (item) => item.value === params.storeId,
   );

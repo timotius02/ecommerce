@@ -18,7 +18,6 @@ import { Input } from "../ui/input";
 import { Button, ButtonWithLoading } from "../ui/button";
 import { useState } from "react";
 import { useToast } from "../ui/use-toast";
-import { redirect } from "next/navigation";
 
 const formSchema = z.object({
   name: z.string().min(1),
@@ -43,9 +42,15 @@ export const StoreModal = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
-      }).then((response) => response.json());
+      });
 
-      window.location.assign(`/${response.data.id}`);
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      } else {
+        const data = await response.json();
+        console.log(data);
+        window.location.assign(`/${data.id}`);
+      }
     } catch (error) {
       toast({
         variant: "destructive",
@@ -75,7 +80,7 @@ export const StoreModal = () => {
                     <FormLabel>Name</FormLabel>
                     <FormControl>
                       <Input
-                        aria-disabled={loading}
+                        disabled={loading}
                         placeholder="E-commerce"
                         {...field}
                       />
@@ -87,13 +92,13 @@ export const StoreModal = () => {
               <div className="pt-6 space-x-2 flex items-center justify-end w-full">
                 <Button
                   variant="outline"
-                  aria-disabled={loading}
+                  disabled={loading}
                   onClick={storeModal.close}
                 >
                   Cancel
                 </Button>
                 <ButtonWithLoading
-                  aria-disabled={loading}
+                  disabled={loading}
                   isLoading={loading}
                   loadingText={"Loading"}
                   type="submit"
