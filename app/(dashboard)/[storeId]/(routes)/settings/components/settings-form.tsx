@@ -108,7 +108,7 @@ export default function SettingsForm({ initialData, host }: SettingsFormProps) {
         loading={loading}
       />
       <div className="flex items-center justify-between">
-        <Heading title="Settings" description="description" />
+        <Heading title="Settings" description="Manage store preferences" />
         <Button
           variant="destructive"
           size="sm"
