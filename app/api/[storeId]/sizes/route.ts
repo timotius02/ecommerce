@@ -14,14 +14,14 @@ export async function POST(
     }
 
     const body = await req.json();
-    const { name, billboardId } = body;
+    const { name, value } = body;
 
     if (!name) {
       return new NextResponse("Name is required", { status: 400 });
     }
 
-    if (!billboardId) {
-      return new NextResponse("Billboard ID is required", { status: 400 });
+    if (!value) {
+      return new NextResponse("Value is required", { status: 400 });
     }
 
     if (!params.storeId) {
@@ -39,17 +39,17 @@ export async function POST(
       return new NextResponse("Unauthorized", { status: 403 });
     }
 
-    const categories = await prismadb.category.create({
+    const size = await prismadb.size.create({
       data: {
         name,
-        billboardId,
+        value,
         storeId: params.storeId,
       },
     });
 
-    return NextResponse.json(categories);
+    return NextResponse.json(size);
   } catch (error) {
-    console.log("[CATEGORIES_POST]", error);
+    console.log("[SIZES_POST]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
@@ -63,15 +63,15 @@ export async function GET(
       return new NextResponse("Store ID is required", { status: 400 });
     }
 
-    const categories = await prismadb.category.findMany({
+    const sizes = await prismadb.size.findMany({
       where: {
         storeId: params.storeId,
       },
     });
 
-    return NextResponse.json(categories);
+    return NextResponse.json(sizes);
   } catch (error) {
-    console.log("[CATEGORIES_GET]", error);
+    console.log("[SIZES_GET]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
