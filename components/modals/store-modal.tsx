@@ -48,7 +48,6 @@ export const StoreModal = () => {
         throw new Error(response.statusText);
       } else {
         const data = await response.json();
-        console.log(data);
         window.location.assign(`/${data.id}`);
       }
     } catch (error) {
