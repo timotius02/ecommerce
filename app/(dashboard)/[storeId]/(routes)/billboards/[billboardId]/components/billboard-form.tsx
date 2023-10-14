@@ -78,17 +78,28 @@ export default function BillboardForm({ initialData }: BillboardFormProps) {
       }
 
       if (!response.ok) {
-        throw new Error(response.statusText);
+        if (response.body) {
+          await response.text().then((text) => {
+            throw new Error(text);
+          });
+        } else {
+          throw new Error();
+        }
+      } else {
+        router.refresh();
+        router.push(`/${params.storeId}/billboards`);
+        toast({
+          description: toastMessage,
+        });
       }
-      router.refresh();
-      router.push(`/${params.storeId}/billboards`);
-      toast({
-        description: toastMessage,
-      });
     } catch (error) {
+      let description = "Something went wrong";
+      if (error instanceof Error && error.message) {
+        description = error.message;
+      }
       toast({
         variant: "destructive",
-        description: "Something went wrong",
+        description,
       });
     } finally {
       setLoading(false);
